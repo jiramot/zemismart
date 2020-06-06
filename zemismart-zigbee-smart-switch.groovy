@@ -37,6 +37,11 @@ metadata {
         //    Zemismart HGZB-43
 //        fingerprint profileId: "C05E", deviceId: "0000", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 1000", outClusters: "0019", manufacturer: "FeiBit", model: "XFNB56-ZSW03LX2.0", deviceJoinName: "ZigBee Smart Switch"
 //        fingerprint profileId: "C05E", deviceId: "0000", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 1000", outClusters: "0019", manufacturer: "3A Smart Home DE", model: "XLXN-3S27LX1.0", deviceJoinName: "ZigBee Smart Switch"
+
+        // Zemismart FB56+ZSW1HKJ2.5 (2Gangs)
+        fingerprint profileId: "C05E", deviceId: "0000", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 1000", outClusters: "0019", manufacturer: "Feibit Inc co.", model: "FB56+ZSW1HKJ2.5", deviceJoinName: "ZigBee Smart Switch"
+        // Zemismart FB56+ZSW1IKJ2.5 (3Gangs)
+        fingerprint profileId: "C05E", deviceId: "0000", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 1000", outClusters: "0019", manufacturer: "Feibit Inc co.", model: "FB56+ZSW1IKJ2.5", deviceJoinName: "ZigBee Smart Switch"
     }
 
     // simulator metadata
@@ -80,6 +85,10 @@ def getChildCount() {
     case ["FNB56-ZSW02LX2.0", "LXN-2S27LX1.0"]:
         return 2;break;
     case ["FNB56-ZSW03LX2.0", "LXN-3S27LX1.0"]:
+        return 3;break;
+    case ["FB56+ZSW1HKJ2.5"]:
+        return 2;break;
+    case ["FB56+ZSW1IKJ2.5"]
         return 3;break;
     default:
         log.debug "Model not found: " + model + "\nConsider adding new fingerprint for your device."
