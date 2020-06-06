@@ -88,7 +88,7 @@ def getChildCount() {
         return 3;break;
     case ["FB56+ZSW1HKJ2.5"]:
         return 2;break;
-    case ["FB56+ZSW1IKJ2.5"]
+    case ["FB56+ZSW1IKJ2.5"]:
         return 3;break;
     default:
         log.debug "Model not found: " + model + "\nConsider adding new fingerprint for your device."
@@ -96,7 +96,11 @@ def getChildCount() {
     }
 }
 
-def getInitialEndpoint () { Integer.parseInt(zigbee.endpointId, 10) }
+def getInitialEndpoint () { 
+   def initialEndpoint= Integer.parseInt(zigbee.endpointId, 10) 
+    log.debug "initialEndpoint: $initialEndpoint"
+    return initialEndpoint;
+}
 def getHexEndpoint (index) { Integer.toHexString(getInitialEndpoint()+index).padLeft(2, "0").toUpperCase() }
 def getEndpoint (child) { child.deviceNetworkId == device.deviceNetworkId?getInitialEndpoint():Integer.parseInt(child.deviceNetworkId.split(":")[-1], 16) }
 
@@ -129,6 +133,8 @@ def moveToLevel (endpoint, level, transitionTime) {
     def p2 = DataType.pack(transitionTime, DataType.UINT16, false)
     def dataString = [p1, p2].join(" ")
     //"st cmd 0x${device.deviceNetworkId} ${endpointId} 8 4 {${scaledLevel} ${transitionTime}}"
+    console.log("mobeToLevel")
+    console.log("0x${device.deviceNetworkId} ${endpointId} 8 4 {${scaledLevel} ${transitionTime}}")
     zigbee.command(zigbee.LEVEL_CONTROL_CLUSTER, 0x0000, dataString, [destEndpoint: endpoint]) +
     zigbee.command(zigbee.LEVEL_CONTROL_CLUSTER, 0x0004, dataString, [destEndpoint: endpoint])
 }
@@ -190,9 +196,9 @@ def setLevel (physicalgraph.device.cache.DeviceDTO child, value, rate = 20) {
 def setLevel (value, rate = 10) { setLevel(device, value, rate) }
 
 def parse (description) {
+    log.debug "calling parse"
     Map eventMap = zigbee.getEvent(description)
     Map eventDescMap = zigbee.parseDescriptionAsMap(description)
-
     log.debug "parse($description, $eventMap, $eventDescMap)"
     if (!eventMap || !eventMap.name) {
         def clusterId = eventDescMap?.clusterInt
@@ -209,6 +215,9 @@ def parse (description) {
         def endpoint = getHexEndpoint(0)
         if (!eventDescMap || eventDescMap.sourceEndpoint == endpoint || eventDescMap.endpoint == endpoint) {
             log.debug "createEvent($eventMap)"
+            log.debug "endpoint $endpoint"
+            log.debug "eventDescMap $eventDescMap"
+            log.debug "device.deviceNetworkId ${device.deviceNetworkId}"
             return createEvent(eventMap)
         } else {
             def childDevice = childDevices.find {
@@ -261,7 +270,8 @@ def ping () {
 def createChildDevices () {
     if (!state.hasInstalledChildren) {
         (2..getChildCount()).each {
-            addChildDevice("Zemismart ZigBee Smart Switch Child", "${device.deviceNetworkId}:${getHexEndpoint(it-1)}", device.hubId, [
+            log.debug "Create child index ${it} deviceNetworkId: ${device.deviceNetworkId} hexEndPoing: ${getHexEndpoint(it-1)} hubId: ${device.hubId}"
+            addChildDevice("Zemismart ZigBee Smart Switch Child", "${device.deviceNetworkId}:${Integer.toBinaryString(it)}", device.hubId, [
                 isComponent: false,
                 componentName: "main",
                 completedSetup: true,
