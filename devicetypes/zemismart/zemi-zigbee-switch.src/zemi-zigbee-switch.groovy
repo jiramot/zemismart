@@ -63,7 +63,7 @@ def installed() {
         setDeviceType("ZigBee Switch")
     } else if (endpointCount > 1){
         def model = device.getDataValue("model")
-        if (model == 'FB56+ZSW1HKJ2.5' || model == 'FB56+ZSW1IKJ2.7' || model == 'FB56+ZSW1IKJ2.5' || model == 'TS0013') {
+        if (model == 'FB56+ZSW1HKJ2.5' || model == 'FB56+ZSW1IKJ2.7' || model == 'FB56+ZSW1IKJ2.5') {
             device.updateDataValue("endpointId", "10")
         }
         // for multi switch, cloud device
