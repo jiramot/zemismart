@@ -61,7 +61,7 @@ def installed() {
     if (endpointCount == 1) {
         // for 1 gang switch - ST Official local dth
         setDeviceType("ZigBee Switch")
-    } else if (endpointCount > 1){
+    } else if (endpointCount > 1) {
         def model = device.getDataValue("model")
         if (model == 'FB56+ZSW1HKJ2.5' || model == 'FB56+ZSW1IKJ2.7' || model == 'FB56+ZSW1IKJ2.5') {
             device.updateDataValue("endpointId", "10")
@@ -122,14 +122,14 @@ private getEndpointCount() {
     def model = device.getDataValue("model")
 
     switch (model) {
-        case 'FNB56-ZSW02LX2.0' : return 2
-        case 'FNB56-ZSW03LX2.0' : return 3
-        case 'FB56+ZSW1GKJ2.7' : return 1
-        case 'FB56+ZSW1HKJ2.5' : return 2
-        case 'FB56+ZSW1IKJ2.5' : return 3
-        case 'FB56+ZSW1IKJ2.7' : return 3
-        case 'TS0013' : return 3
-        default : return 0
+        case 'FNB56-ZSW02LX2.0': return 2
+        case 'FNB56-ZSW03LX2.0': return 3
+        case 'FB56+ZSW1GKJ2.7': return 1
+        case 'FB56+ZSW1HKJ2.5': return 2
+        case 'FB56+ZSW1IKJ2.5': return 3
+        case 'FB56+ZSW1IKJ2.7': return 3
+        case 'TS0013': return 3
+        default: return 0
     }
 }
 
@@ -153,7 +153,7 @@ private void createChildDevice(String deviceLabel, String endpointHexString) {
     if (!childDevice) {
         log.debug("Need to createChildDevice: $device.deviceNetworkId:$endpointHexString")
         addChildDevice("smartthings", "Child Switch Health", "$device.deviceNetworkId:$endpointHexString", device.hubId,
-                       [completedSetup: true, label: deviceLabel, isComponent: false])
+                [completedSetup: true, label: deviceLabel, isComponent: false])
     } else {
         log.debug("createChildDevice: SKIP - $device.deviceNetworkId:${endpointHexString}")
     }
