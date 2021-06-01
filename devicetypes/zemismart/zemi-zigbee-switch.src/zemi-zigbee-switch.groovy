@@ -1,27 +1,4 @@
-/*
- *  Zemi  ZigBee Switch - touch
- * 
- *  Copyright 2020 SmartThings
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
- *  use this file except in compliance with the License. You may obtain a copy
- *  of the License at:
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- *  License for the specific language governing permissions and limitations
- *  under the License.
- *
- *  author : fuls@naver.com
- */
-public static String version() { return "v0.0.2.20200426" }
-/*
- *   2020/04/26 >>> v0.0.2.20200426 - Support to old Jemi swtich version
- *   2020/04/25 >>> v0.0.1.20200425 - Initialize
- */
+public static String version() { return "v0.0.3.20210601" }
 
 import java.lang.Math
 
@@ -43,6 +20,7 @@ metadata {
         fingerprint endpointId: "10", profileId: "0104", deviceId: "0002", inClusters: "0000, 0003, 0004, 0005, 0006", manufacturer: "Feibit Inc co.", model: "FB56+ZSW1IKJ2.7", deviceJoinName: "Zemi Zigbee Switch 1"
         fingerprint endpointId: "0B", profileId: "C05E", inClusters: "0000, 0004, 0003, 0006, 0005, 1000, 0008", outClusters: "0019", manufacturer: "FeiBit", model: "FNB56-ZSW02LX2.0", deviceJoinName: "Zemi Zigbee Switch 1"
         fingerprint endpointId: "01", profileId: "C05E", inClusters: "0000, 0004, 0003, 0006, 0005, 1000, 0008", outClusters: "0019", manufacturer: "FeiBit", model: "FNB56-ZSW03LX2.0", deviceJoinName: "Zemi Zigbee Switch 1"
+        fingerprint endpointId: "01", profileId: "0104", inClusters: "0100, 0003, 0004, 0005, 0006, E000, E001", outClusters: "0019", manufacturer: "_TZ3000_m7djrkhw", model: "TS0013", deviceJoinName: "Tuya Switch 1"
     }
 
     preferences {
@@ -85,7 +63,7 @@ def installed() {
         setDeviceType("ZigBee Switch")
     } else if (endpointCount > 1){
         def model = device.getDataValue("model")
-        if (model == 'FB56+ZSW1HKJ2.5' || model == 'FB56+ZSW1IKJ2.7' || model == 'FB56+ZSW1IKJ2.5') {
+        if (model == 'FB56+ZSW1HKJ2.5' || model == 'FB56+ZSW1IKJ2.7' || model == 'FB56+ZSW1IKJ2.5' || model == 'TS0013') {
             device.updateDataValue("endpointId", "10")
         }
         // for multi switch, cloud device
@@ -150,6 +128,7 @@ private getEndpointCount() {
         case 'FB56+ZSW1HKJ2.5' : return 2
         case 'FB56+ZSW1IKJ2.5' : return 3
         case 'FB56+ZSW1IKJ2.7' : return 3
+        case 'TS0013' : return 3
         default : return 0
     }
 }
